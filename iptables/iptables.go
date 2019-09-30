@@ -341,6 +341,12 @@ func (ipt *IPTables) StructuredStats(table, chain string) ([]Stat, error) {
 	return structStats, nil
 }
 
+// ZeroCounters zeroes byte counters of a table, chain or a rule
+func (ipt *IPTables) ZeroCounters(table, chain string, pos int) error {
+	cmd := append([]string{"-t", table, "-Z", chain, strconv.Itoa(pos)})
+	return ipt.run(cmd...)
+}
+
 func (ipt *IPTables) executeList(args []string) ([]string, error) {
 	var stdout bytes.Buffer
 	if err := ipt.runWithOutput(args, &stdout); err != nil {
